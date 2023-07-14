@@ -2,10 +2,10 @@ $(function () {
   //ドロップダウンメニューにホバーすると
   $(".dropdwn li").hover(function () {
     //スライドが下がってくる
-    $(this).children("ul").slideDown()
+    $(this).children("ul").stop().slideDown()
   },
   function () {
     //ドロップダウンメニューから離すとスライドが上がる
-    $(this).children("ul").slideUp()
+    $(this).children("ul").stop().slideUp()
   });
 });

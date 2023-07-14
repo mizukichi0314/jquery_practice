@@ -10,6 +10,8 @@ $(function () {
   });
   //drawer_bgをクリックすると
   $(".drawer_bg").on("click", function () {
+    //.drawer-bgの要素を非表示
+    $(this).hide();
     //ボタンに付与していたactiveクラスを解除
     $(".drawer_button").removeClass("active");
     //ナビに付与していたopenクラスを解除

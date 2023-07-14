@@ -62,7 +62,7 @@ $(function () {
   //q9のボタンをクリックすると
   $("#q9 li").on("click", function () {
     //インデックス番号を取得
-    var index = $(this).index();
+    const index = $(this).index();
     //アラートを表示
     alert(index);
   });
@@ -71,9 +71,8 @@ $(function () {
   //q10のボタンをクリックすると
   $("#q10 li").on("click", function () {
     //インデックス番号を取得
-    var index = $(this).index();
+    const index = $(this).index();
     //クリックされたタブと同じインデックス番号を文字を大きくして表示
     $("#q11 li").eq(index).addClass("large-text")
   });
-  
-  });
+});

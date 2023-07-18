@@ -7,8 +7,6 @@ $(function () {
     if (select === "all") {
       //リストの値を全て表示
       $(".food-list li").show();
-      //food-list内の項目を表示
-        $(this).show();
       //上記以外の場合
     } else {
       //select-boxの要素選択時にfood-list内でループ処理を加える

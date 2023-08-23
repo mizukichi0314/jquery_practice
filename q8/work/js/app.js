@@ -96,7 +96,7 @@ $(function () {
     $('.message').remove();
     //class属性".message"をerrMessageに代入
     const errMessage = '<div class = "message">正常に通信できませんでした。<br></>インターネットの接続の確認をしてください。</div>';
-    //class属性".message"をerrTextに代入
+    //class属性".message"をerrCommentに代入
     const errComent = '<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>';
     //class属性"message"をerrMessageに代入サーバー
     const serverErr = '<div class = "message">予期せぬエラーが発生しました。<br>再度接続し直してください。</div>';

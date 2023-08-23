@@ -69,15 +69,15 @@ $(function () {
         //検索結果の本のサイトリンクをbookLinkに代入
         const bookLink = searchData[0].items[index].link["@id"];
         //上記はyoutubeの「45分でBook検索アプリを作る」を参考
-        //変数booksにHTMLを追加。検索結果に本のタイトルがなかった場合、タイトル：不明と表示
-        const status = '<li class = "lists-item"><div class = "list-inner"><p>タイトル : ' + bookTitle +
-        //検索結果に作者が無かった場合、作者:不明と表示
+        //変数statusにHTMLを追加。検索結果に本のタイトルがなかった場合、タイトル不明と表示
+        const status = '<li class = "lists-item"><div class = "lists-inner"><p>タイトル : ' + bookTitle +
+        //検索結果に作者が無かった場合、作者不明と表示
         '</p><p>作者 :' + creator +
-        //出版社に検索結果が無かった場合、出版社：不明と表示
+        //出版社に検索結果が無かった場合、出版社不明と表示
         '</p><p>出版社 :' + publisher +
         //書籍情報を別タブで開くように_blankで設定
         '</p><a href= "' + bookLink + '"target = "_blank">書籍情報</a></div></li>';
-        //.listsにbooksに格納したHTMLを追加
+        //.listsにstatusに格納したHTMLを追加
         $('.lists').prepend(status);
       })
       //もし、検索結果がなかった場合
@@ -97,7 +97,7 @@ $(function () {
     //class属性".message"をerrMessageに代入
     const errMessage = '<div class = "message">正常に通信できませんでした。<br></>インターネットの接続の確認をしてください。</div>';
     //class属性".message"をerrTextに代入
-    const errText = '<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>';
+    const errComent = '<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>';
     //class属性"message"をerrMessageに代入サーバー
     const serverErr = '<div class = "message">予期せぬエラーが発生しました。<br>再度接続し直してください。</div>';
     //エラーメッセージのステータスが0の場合
@@ -107,11 +107,11 @@ $(function () {
       //エラーメッセージのステータスが400の場合
     } else if (err.status === 400) {
       //リクエストが不正だった場合のメッセージ
-      //文字入力がない場合やURLが間違っている場合など、errTextを追加
-      $('.lists').before(errText);
+      //文字入力がない場合やURLが間違っている場合など、errComentを追加
+      $('.lists').before(errComent);
       //それ以外の場合
     } else {
-      //surverErrを追加
+      //serverErrを追加
       $('.lists').before(serverErr);
     }
   }

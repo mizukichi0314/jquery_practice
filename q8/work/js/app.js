@@ -16,10 +16,10 @@ $(function () {
   //空の文字列をsearchLog変数に代入。searchLogは検索履歴や結果などを格納。
   let searchLog = "";
   //検索ボタンをクリックした時
-  $('.search-btn').on('click',function () {
+  $('.search-btn').on('click', function () {
     //入力した内容の値をsearchWord変数に代入
     const searchWord = $('#search-input').val();
-    //もし今入力された値と前に検索された値が違う場合
+    //検索された値が違う場合
     if (searchWord !== searchLog) {
       //ulの.list内の要素を空にする
       $('.lists').empty();
@@ -30,14 +30,14 @@ $(function () {
     //検索された値が同じ場合
     } else {
       //ページカウント数を増やす
-      pageCount = pageCount + 1;
+      pageCount++;
     };
     //settingsにajaxの設定を格納
     const settings = {
       //APIのURL。HTTPメソッドがGETであり、指定されたURLのデータ取得するためのリクエスト。
-      "url": 'https://ci.nii.ac.jp/books/opensearch/search?title=${searcWord}&format=json&p=${pageCount}&count=20',
+      url: 'https://ci.nii.ac.jp/books/opensearch/search?title=${searcWord}&format=json&p=${pageCount}&count=20',
       //"method": "GET";は、HTTPメソッドやAPIの呼び出し
-      "method": "GET",
+      method: "GET",
     };
     //ajaxの実行
     //ajaxのリクエストを送信。.doneは通信成功した時の意味。
@@ -70,22 +70,22 @@ $(function () {
         const bookLink = searchData[0].items[index].link["@id"];
         //上記はyoutubeの「45分でBook検索アプリを作る」を参考
         //変数booksにHTMLを追加。検索結果に本のタイトルがなかった場合、タイトル：不明と表示
-        const books = '<li class = "lists-items"><div class = "list-inner"><p>タイトル : ' + bookTItle +
+        const status = '<li class = "lists-item"><div class = "list-inner"><p>タイトル : ' + bookTitle +
         //検索結果に作者が無かった場合、作者:不明と表示
         '</p><p>作者 :' + creator +
         //出版社に検索結果が無かった場合、出版社：不明と表示
         '</p><p>出版社 :' + publisher +
         //書籍情報を別タブで開くように_blankで設定
-        '</p><a href= "' + bookLink + '" target = "_blank">書籍情報</a></div></li>';
+        '</p><a href= "' + bookLink + '"target = "_blank">書籍情報</a></div></li>';
         //.listsにbooksに格納したHTMLを追加
-        $('.lists').prepend(books);
+        $('.lists').prepend(status);
       })
       //もし、検索結果がなかった場合
     } else {
       //class属性"message"をstatusに格納
       const status = '<div class = "message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</div>';
       //.listsの前にstatusに格納された内容を追加
-      $(".lists").before(status);
+      $('.lists').before(status);
     }
   }
   //通信失敗した場合の処理
@@ -94,17 +94,17 @@ $(function () {
     $('.lists').empty();
     //class属性"message"を削除
     $('.message').remove();
-    //class属性".message"をerrConnectに代入
-    const errConnect = '<div class = "message">正常に通信できませんでした。<br></>インターネットの接続の確認をしてください。</div>';
+    //class属性".message"をerrMessageに代入
+    const errMessage = '<div class = "message">正常に通信できませんでした。<br></>インターネットの接続の確認をしてください。</div>';
     //class属性".message"をerrTextに代入
     const errText = '<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>';
-    //class属性"message"をerrMessageに代入
-    const surverErr = '<div class = "message">予期せぬエラーが発生しました。<br>再度接続し直してください。</div>';
+    //class属性"message"をerrMessageに代入サーバー
+    const serverErr = '<div class = "message">予期せぬエラーが発生しました。<br>再度接続し直してください。</div>';
     //エラーメッセージのステータスが0の場合
     if(err.status === 0 ) {
-      //リクエストが許可されていない場合、errConnectを追加
-      $('.lists').before(errConnect);
-      //エラーメッセージのステータスが400と表示
+      //リクエストが許可されていない場合、errMessageを追加
+      $('.lists').before(errMessage);
+      //エラーメッセージのステータスが400の場合
     } else if (err.status === 400) {
       //リクエストが不正だった場合のメッセージ
       //文字入力がない場合やURLが間違っている場合など、errTextを追加
@@ -112,7 +112,7 @@ $(function () {
       //それ以外の場合
     } else {
       //surverErrを追加
-      $('.lists').before(surverErr);
+      $('.lists').before(serverErr);
     }
   }
   //リセットボタンをクリックした時

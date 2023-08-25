@@ -36,7 +36,7 @@ $(function () {
     //settingsにajaxの設定を格納
     const settings = {
       //APIのURL。HTTPメソッドがGETであり、指定されたURLのデータ取得するためのリクエスト。
-      "url": 'https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20',
+      "url": `https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20`,
       //"method": "GET";は、HTTPメソッドやAPIの呼び出し
       "method": 'GET',
     }
@@ -52,10 +52,10 @@ $(function () {
       //displayError関数を呼び出す
       displayError(err)
     })
-  });
+  })
   //通信成功した場合の処理
   function displayResult (searchData) {
-    //.messageクラスの削除
+    //messageクラスの削除
     $('.message').remove();
     //もし、検索結果が無かった場合
     //searchData[0].itemsがundefined,また配列の中身がない場合エラーメッセージを表示
@@ -66,25 +66,37 @@ $(function () {
       $('.lists').before(noResult);
       //検索結果があった場合
     } else { 
-      //index番号と値を取得し、繰り返し処理をおこなう
+      //index番号と配列の中の値を取得し、繰り返し処理をおこなう
       $.each(searchData[0].items, function (index) {
-        //検索結果の本のタイトルをbookTitleに代入
-        let bookTitle = searchData[0].items[index].title ? searchData[0].items[index] : "(不明)";
-        //検索結果の作者をcreatorに代入
-        let creator = searchData[0].items[index]["dc:creator"] ? searchData[0].items[index]["dc:creator"] : "(不明)";
-        //検索結果の出版社をpublisherに代入
-        let publisher = searchData[0].items[index]["dc:publisher"] ? searchData[0].items[index]["dc:publisher"] : "(不明)";
-        //検索結果の本のサイトリンクをbookLinkに代入
+        //タイトル
+        //配列の中の値をbookTitleに代入
+        let bookTitle = searchData[0].items[index].title;
+        //作者
+        //配列の中の値をcreatorに代入
+        let creator = searchData[0].items[index]["dc:creator"];
+        //出版社
+        //配列の中の値をpublisherに代入
+        let publisher = searchData[0].items[index]["dc:publisher"];
+        //書籍情報
+        //配列の中の値をbookLinkに代入
         let bookLink = searchData[0].items[index].link["@id"];
         //上記はyoutubeの「45分でBook検索アプリを作る」を参考
-        //変数listItemsにHTMLを追加。検索結果に本のタイトルがなかった場合、タイトル不明と表示
-        let listItems = '<li class = "lists-item"><div class = "lists-inner"><p>タイトル : ' + bookTitle +
-        //検索結果に作者が無かった場合、作者不明と表示
-        '</p><p>作者 :' + creator +
-        //出版社に検索結果が無かった場合、出版社不明と表示
-        '</p><p>出版社 :' + publisher +
-        //書籍情報を別タブで開くように_blankで設定
-        '</p><a href= "' + bookLink + '"target = "_blank">書籍情報</a></div></li>';
+        //それぞれの値がundefinedだった時に不明と表示
+        //bookTitleの値が、undefinedだった時に、変数bookTitleにタイトル不明を代入
+        bookTitle == undefined ? bookTitle = "タイトル不明" : bookTitle;
+        //creatorの値が、undefinedだった時に、変数creatorに作者不明を代入
+        creator == undefined ? creator = "作者不明" : creator;
+        //publisherの値が、undefinedだった時、変数publisherに出版社不明を代入ｓｓ
+        publisher == undefined ? publisher = "出版社不明" : publisher;
+        //変数listItemsにそれぞれのリスト一覧を表示させるHTMLを追加。
+        let listItems = `<li class = "lists-item">
+        <div class = "lists-inner">
+        <p>タイトル:${bookTitle}</p>
+        <p>作者:${creator}</p>
+        <p>出版社:${publisher}</p>
+        <a href = "${bookLink}" target = "_blank">書籍情報</a>
+        </div>
+        </li>`;
         //.listsクラスに格納したHTMLを追加
         $('.lists').prepend(listItems);
       })
@@ -92,16 +104,16 @@ $(function () {
   }
   //通信失敗した場合の処理
   function displayError (err) {
-    //.listsクラスを空にする
+    //listsクラスを空にする
     $('.lists').empty();
-    //.messageクラスを削除
+    //messageクラスを削除
     $('.message').remove();
-    //class属性".message"をerrMessageに代入
-    const errMessage = '<div class = "message">正常に通信できませんでした。<br></>インターネットの接続の確認をしてください。</div>';
-    //class属性".message"をerrCommentに代入
-    const errComent = '<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>';
-    //class属性"message"をerrMessageに代入
-    const serverErr = '<div class = "message">予期せぬエラーが発生しました。<br>再度接続し直してください。</div>';
+    //messageクラスをerrMessageに代入
+    const errMessage = `<div class = "message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>`;
+    //messageクラスをerrCommentに代入
+    const errComent = `<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
+    //messageクラスをerrMessageに代入
+    const serverErr = `<div class = "message">予期せぬエラーが発生しました。<br>再度接続し直してください。</div>`;
     //エラーメッセージのステータスが0の場合
     if(err.status === 0 ) {
       //リクエストが許可されていない場合、errMessageを追加
@@ -123,11 +135,17 @@ $(function () {
     pageCount = 1;
     //空の文字列をsearchLog変数に代入
     searchLog = "";
-    //class属性".lists"を削除
+    //listsクラスを削除
     $('.lists').empty();
-    //class属性".message"を削除
+    //messageクラスを削除
     $('.message').remove();
     //検索ワードを空にする
     $('#search-input').val("");
   });
 });
+
+//HTMLの文字列内で変数を埋め込むためにはバッククォート（``）を使用して文字列を作成
+//`${変数名}`の形式で変数を埋め込める
+//テンプレートリテラル内では、複数行の文字列もそのまま再現できる
+//テンプレートリテラルとは、シングルクォーテンション（''）ダブルクォーテンション（""）で
+//囲む方法とは異なり、バッククォートで囲む

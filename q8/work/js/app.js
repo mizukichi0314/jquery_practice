@@ -18,7 +18,7 @@ $(function () {
   //検索ボタンをクリックした時
   $('.search-btn').on('click', function () {
     //検索ワードに入力された値をsearchWord変数へ代入
-    let searchWord = $('#search-input').val();
+    const searchWord = $('#search-input').val();
     //検索された値が違う場合
     if (searchWord === searchLog) {
       //.listの要素を空にする
@@ -61,7 +61,7 @@ $(function () {
     //searchData[0].itemsがundefined,また配列の中身がない場合エラーメッセージを表示
     if (searchData[0].items == undefined || searchData[0].items.length == 0) {
       //.messageクラスをnoResultに格納
-      let noResult = '<div class = "message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</div>';
+      const noResult = '<div class = "message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</div>';
       //.listsクラスの前にエラーメッセージを表示
       $('.lists').before(noResult);
       //検索結果があった場合
@@ -79,17 +79,17 @@ $(function () {
         let publisher = searchData[0].items[index]["dc:publisher"];
         //書籍情報
         //配列の中の値をbookLinkに代入
-        let bookLink = searchData[0].items[index].link["@id"];
+        const bookLink = searchData[0].items[index].link["@id"];
         //上記はyoutubeの「45分でBook検索アプリを作る」を参考
         //それぞれの値がundefinedだった時に不明と表示
         //bookTitleの値が、undefinedだった時に、変数bookTitleにタイトル不明を代入
         bookTitle == undefined ? bookTitle = "タイトル不明" : bookTitle;
         //creatorの値が、undefinedだった時に、変数creatorに作者不明を代入
         creator == undefined ? creator = "作者不明" : creator;
-        //publisherの値が、undefinedだった時、変数publisherに出版社不明を代入ｓｓ
+        //publisherの値が、undefinedだった時、変数publisherに出版社不明を代入
         publisher == undefined ? publisher = "出版社不明" : publisher;
         //変数listItemsにそれぞれのリスト一覧を表示させるHTMLを追加。
-        let listItems = `<li class = "lists-item">
+        const listItems = `<li class = "lists-item">
         <div class = "lists-inner">
         <p>タイトル:${bookTitle}</p>
         <p>作者:${creator}</p>
@@ -113,12 +113,14 @@ $(function () {
     //messageクラスをerrCommentに代入
     const errComent = `<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
     //messageクラスをerrMessageに代入
-    const serverErr = `<div class = "message">予期せぬエラーが発生しました。<br>再度接続し直してください。</div>`;
+    const serverErr = `<div class = "message">予期せぬエラーが起きました。<br>再読み込みを行ってください。</div>`;
     //エラーメッセージのステータスが0の場合
+    //エラーが発生と検索して確認
     if(err.status === 0 ) {
       //リクエストが許可されていない場合、errMessageを追加
       $('.lists').before(errMessage);
       //エラーメッセージのステータスが400の場合
+      //デベロッパーツールのコンソールで、net::ERR_FAILED 400と表記されていたので確認
     } else if (err.status === 400) {
       //リクエストが不正だった場合のメッセージ
       //文字入力がない場合やURLが間違っている場合など、errComentを追加

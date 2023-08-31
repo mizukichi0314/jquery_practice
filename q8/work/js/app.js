@@ -85,10 +85,10 @@ $(function () {
         const bookLink = searchData[0].items[index].link["@id"];
         // 変数listItemsにそれぞれのリスト一覧を表示させるHTMLを追加。
         const listItems = `<li class = "lists-item">
-        <div class = "lists-inner">
-        <p>タイトル:${bookTitle}</p>
-        <p>作者:${creator}</p>
-        <p>出版社:${publisher}</p>
+        <div class = "list-inner">
+        <p>タイトル：${bookTitle}</p>
+        <p>作者：${creator}</p>
+        <p>出版社：${publisher}</p>
         <a href = "${bookLink}" target = "_blank">書籍情報</a>
         </div>
         </li>`;
@@ -106,7 +106,7 @@ $(function () {
     // messageクラスをerrMessageに代入
     const errMessage = `<div class = "message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>`;
     // messageクラスをerrCommentに代入
-    const errComent = `<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
+    const errComment = `<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
     // messageクラスをerrMessageに代入
     const serverErr = `<div class = "message">予期せぬエラーが起きました。<br>再読み込みを行ってください。</div>`;
     // エラーメッセージのステータスが0の場合
@@ -115,17 +115,18 @@ $(function () {
       // リクエストが許可されていない場合、errMessageを追加
       $('.lists').before(errMessage);
       // エラーメッセージのステータスが400の場合
-      // デベロッパーツールのコンソールで、net::ERR_FAILED 400と表記されていたので確認
+      // 検索ワードに文字入力せずに検索をかけたらデベロッパーツールのコンソールで、net::ERR_FAILED 400と表記されていたので確認
     } else if (err.status === 400) {
       // リクエストが不正だった場合のメッセージ
       // 文字入力がない場合やURLが間違っている場合など、errComentを追加
-      $('.lists').before(errComent);
+      $('.lists').before(errComment);
       // それ以外の場合
     } else {
       // serverErrを追加
       $('.lists').before(serverErr);
     }
-    // ステータス0と400の場合の確認方法は、113行目と118行目にコメントしてあります。
+    // ステータス400の場合の確認方法は、118行目にコメントしてあります。
+    // 0の場合は修正中です。
   }
   // リセットボタンをクリックした時
   $('.reset-btn').on('click', function () {

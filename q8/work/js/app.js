@@ -110,23 +110,21 @@ $(function () {
     // messageクラスをerrMessageに代入
     const serverErr = `<div class = "message">予期せぬエラーが起きました。<br>再読み込みを行ってください。</div>`;
     // エラーメッセージのステータスが0の場合
-    // エラーが発生と検索して確認
     if(err.status === 0 ) {
       // リクエストが許可されていない場合、errMessageを追加
+      // 文字入力がない場合や通信環境がないときにエラーステータス０を表示
       $('.lists').before(errMessage);
+      // エラーステータス0をコンソールに表示
+      console.log("Error status",err.status);
       // エラーメッセージのステータスが400の場合
-      // 検索ワードに文字入力せずに検索をかけたらデベロッパーツールのコンソールで、net::ERR_FAILED 400と表記されていたので確認
     } else if (err.status === 400) {
       // リクエストが不正だった場合のメッセージ
-      // 文字入力がない場合やURLが間違っている場合など、errComentを追加
       $('.lists').before(errComment);
       // それ以外の場合
     } else {
       // serverErrを追加
       $('.lists').before(serverErr);
     }
-    // ステータス400の場合の確認方法は、118行目にコメントしてあります。
-    // 0の場合は修正中です。
   }
   // リセットボタンをクリックした時
   $('.reset-btn').on('click', function () {

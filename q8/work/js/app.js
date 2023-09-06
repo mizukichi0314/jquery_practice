@@ -19,18 +19,20 @@ $(function () {
   $('.search-btn').on('click', function () {
     // 検索ワードに入力された値をsearchWord変数へ代入
     const searchWord = $('#search-input').val();
-    // 検索された値が違う場合
-    if (searchWord === searchLog) {
+    // 初回の検索時にページカウントを１に設定
+    if (searchWord !== searchLog) {
       // .listの要素を空にする
       $('.lists').empty();
       // ページカウントを初期値１に戻す
       pageCount = 1;
+      // console.log(`ページカウント:` + pageCount);
       // searchLogに検索ワードに入力された値を格納
       searchLog = searchWord;
-    // 検索された値が同じ場合
+    // ここで新しい検索結果を取得し、表示件数を増やす処理
     } else {
       // ページカウント数を増やし、20件のデータを表示する
       pageCount ++;
+      // console.log(`ページカウント:` + pageCount);
     }
     // API
     // settingsにajaxの設定を格納

@@ -48,11 +48,11 @@ $(function () {
       // responseからgraphというプロパティの値を取得して、result変数に格納
       const result = response[ '@graph'];
       // displayResult関数(検索結果)を呼び出す
-      displayResult(result)
+      displayResult(result);
       // リクエストが失敗した場合の処理
     }).fail(function (err) {
       // displayError関数を呼び出す
-      displayError(err)
+      displayError(err);
     })
   })
   // 通信成功した場合の処理
@@ -105,26 +105,27 @@ $(function () {
     $('.lists').empty();
     // messageクラスを削除
     $('.message').remove();
-    // messageクラスをerrMessageに代入
-    const errMessage = `<div class = "message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>`;
-    // messageクラスをerrCommentに代入
-    const errComment = `<div class = "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
-    // messageクラスをerrMessageに代入
-    const serverErr = `<div class = "message">予期せぬエラーが起きました。<br>再読み込みを行ってください。</div>`;
     // エラーメッセージのステータスが0の場合
     if(err.status === 0 ) {
-      // リクエストが許可されていない場合、errMessageを追加
-      // 文字入力がない場合や通信環境がないときにエラーステータス０を表示
+      // messageクラスをerrMessageに代入
+      // 通信環境がないときにエラーステータス０を表示
+      const errMessage = `<div class= "message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>`;
+      // listsクラスの前にerrMessageに代入したHTMLを追加
       $('.lists').before(errMessage);
       // エラーステータス0をコンソールに表示
       console.log("Error status",err.status);
       // エラーメッセージのステータスが400の場合
     } else if (err.status === 400) {
-      // リクエストが不正だった場合のメッセージ
+      // messageクラスをerrCommentに代入
+      // "title"パラメーターが不足、またリクエストが不正だった場合に表示
+      const errComment =`<div class= "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
+      // listsクラスの前にerrCommentに代入したHTMLを追加
       $('.lists').before(errComment);
       // それ以外の場合
     } else {
-      // serverErrを追加
+      // messageクラスをserverErrに代入
+      const serverErr = `<div class= "message">予期せぬエラーが起きました。<br>再度読み込みを行なってください。</div>`;
+      // listsクラスの前にserverErrに代入したHTMLを追加
       $('.lists').before(serverErr);
     }
   }

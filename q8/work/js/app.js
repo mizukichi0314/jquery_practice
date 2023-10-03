@@ -107,23 +107,22 @@ $(function () {
     $('.message').remove();
     // エラーメッセージのステータスが0の場合
     if(err.status === 0 ) {
-      // messageクラスをerrMessageに代入
-      // 通信環境がないとき、またURLが正しくない時にエラーステータス０
-      // 検索ワードが空欄の場合も含む
-      const errMessage = `<div class= "message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>`;
-      // listsクラスの前にerrMessageに代入したHTMLを追加
-      $('.lists').before(errMessage);
+      // messageクラスをinternetErrに代入
+      // インターネット接続がされていない時にステータス０を表示
+      // 実際にwi-fiを切って「ハリーポッター」と検索。ネットワーク上に、net::ERR_INTERNET_DISCONNECTEDの表示も確認。
+      const internetErr = `<div class= "message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>`;
+      // listsクラスの前にinternetErrに代入したHTMLを追加
+      $('.lists').before(internetErr);
       // エラーステータス0をコンソールに表示
       console.log("Error status",err.status);
       // エラーメッセージのステータスが400の場合
     } else if (err.status === 400) {
-      // messageクラスをerrCommentに代入
+      // messageクラスをerrMessageに代入
       // "title"パラメーターを受け付けなかったり、リクエストが不正だった場合に表示
       // 実際に検索フォームに無効なデータ(文字入力無しで空白のまま)検索。ネットワーク上に、net::ERR_FAILED 400の表示を確認。
-      // "title"パラメーターが不足、またサーバーエラー、リクエストが不正だった場合エラー400
-      const errComment =`<div class= "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
-      // listsクラスの前にerrCommentに代入したHTMLを追加
-      $('.lists').before(errComment);
+      const errMessage =`<div class= "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
+      // listsクラスの前にerrMessageに代入したHTMLを追加
+      $('.lists').before(errMessage);
       // それ以外の場合
     } else {
       // messageクラスをserverErrに代入

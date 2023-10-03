@@ -108,8 +108,8 @@ $(function () {
     // エラーメッセージのステータスが0の場合
     if(err.status === 0 ) {
       // messageクラスをerrMessageに代入
-      // インターネット接続がされていない時にステータス０を表示
-      // 実際にwi-fiを切って「ハリーポッター」と検索。ネットワーク上に、net::ERR_INTERNET_DISCONNECTEDの表示も確認。
+      // 通信環境がないとき、またURLが正しくない時にエラーステータス０
+      // 検索ワードが空欄の場合も含む
       const errMessage = `<div class= "message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>`;
       // listsクラスの前にerrMessageに代入したHTMLを追加
       $('.lists').before(errMessage);
@@ -120,6 +120,7 @@ $(function () {
       // messageクラスをerrCommentに代入
       // "title"パラメーターを受け付けなかったり、リクエストが不正だった場合に表示
       // 実際に検索フォームに無効なデータ(文字入力無しで空白のまま)検索。ネットワーク上に、net::ERR_FAILED 400の表示を確認。
+      // "title"パラメーターが不足、またサーバーエラー、リクエストが不正だった場合エラー400
       const errComment =`<div class= "message">検索ワードが有効ではありませんでした。<br>1文字以上で検索してください。</div>`;
       // listsクラスの前にerrCommentに代入したHTMLを追加
       $('.lists').before(errComment);
